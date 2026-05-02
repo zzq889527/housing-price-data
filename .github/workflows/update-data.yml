@@ -2,8 +2,8 @@ name: Update Housing Price Data
 
 on:
   schedule:
-    # 每周日凌晨3点运行
-    - cron: '0 3 * * 0'
+    # 每月5日早上3点运行（数据通常在每月15-18日公布，但GitHub Actions有延迟）
+    - cron: '0 3 5 * *'
   workflow_dispatch:  # 允许手动触发
   push:
     branches: [ main ]
@@ -17,7 +17,7 @@ jobs:
     
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v3
+      uses: actions/check-out@v3
       with:
         fetch-depth: 0
     
@@ -28,22 +28,32 @@ jobs:
     
     - name: Install dependencies
       run: |
-        pip install pandas openpyxl requests beautifulsoup4 lxml
+        pip install requests pandas numpy
       timeout-minutes: 5
     
-    - name: Run data generation scripts
+    - name: Run auto update script
       run: |
-        python scripts/generate_sample_data.py || true
-        python scripts/aggregate_data.py || true
+        cd scripts
+        python auto_update_from_github.py
       continue-on-error: true
-      timeout-minutes: 3
+      timeout-minutes: 5
+    
+    - name: Generate embedded data
+      run: |
+        node generate-embedded-data.js
+      timeout-minutes: 2
     
     - name: Commit and push if changed
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add data/ || true
-        git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update housing price data - $(date +'%Y-%m-%d %H:%M')" && git push)
+        git add data/ js/embeddedData.js || true
+        git diff --quiet && git diff --staged --quiet || (git commit -m "🤖 Auto-update housing price data - $(date +'%Y-%m-%d')" && git push)
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       timeout-minutes: 2
+    
+    - name: Notify if failed
+      if: failure()
+      run: |
+        echo "::warning::自动更新失败，请检查日志"
