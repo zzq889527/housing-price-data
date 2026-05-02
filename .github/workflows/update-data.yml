@@ -5,18 +5,30 @@ on:
     # 每周日凌晨3点运行
     - cron: '0 3 * * 0'
   workflow_dispatch:  # 允许手动触发
+  push:
+    branches: [ main ]
+    paths: [ 'scripts/**', 'data/**' ]
+
+# 添加全局权限
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+# 允许一个并发部署
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
   update-data:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
       with:
-        fetch-depth: 0  # 获取完整历史
+        fetch-depth: 0
     
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -26,37 +38,44 @@ jobs:
     - name: Install dependencies
       run: |
         pip install -r requirements.txt
+      timeout-minutes: 5
     
-    - name: Run Stats Gov Crawler
-      run: python scripts/stats_gov_crawler.py
+    - name: Generate Sample Data (Fallback)
+      run: python scripts/generate_sample_data.py
       continue-on-error: true
-    
-    - name: Run Beike Crawler
-      run: python scripts/beike_crawler.py
-      continue-on-error: true
-    
-    - name: Aggregate Data
-      run: python scripts/aggregate_data.py
+      timeout-minutes: 2
     
     - name: Commit and push if changed
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add data/
-        git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update housing price data - $(date +'%Y-%m-%d')" && git push)
+        git add data/ || true
+        git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update housing price data - $(date +'%Y-%m-%d %H:%M')" && git push)
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      timeout-minutes: 2
+  
+  # 单独的部署任务
+  deploy:
+    needs: update-data
+    if: always()
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
     
-    - name: Create release
-      if: success()
-      uses: softprops/action-gh-release@v1
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    
+    - name: Setup Pages
+      uses: actions/configure-pages@v4
+    
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v3
       with:
-        tag_name: data-${{ github.run_number }}
-        name: Data Update #${{ github.run_number }}
-        body: |
-          自动更新的房价数据
-          更新时间: ${{ github.event.head_commit.timestamp }}
-        draft: false
-        prerelease: false
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        path: 'data/'
+    
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
