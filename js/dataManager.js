@@ -162,14 +162,38 @@ class DataManager {
     async _loadEmbeddedData() {
         const data = window.EmbeddedData;
         
-        // 加载城市元数据
-        this.citiesMetaData = data.citiesMeta;
-        
-        // 加载所有城市数据
-        this.citiesData = data.citiesData;
-        
-        // 加载宏观数据
-        this.macroData = data.macroData;
+        // 检查数据格式，支持两种格式
+        if (data.citiesMeta && data.citiesData) {
+            // 新格式：直接使用
+            this.citiesMetaData = data.citiesMeta;
+            this.citiesData = data.citiesData;
+            this.macroData = data.macroData;
+        } else if (data.cities) {
+            // 原始格式：需要转换（和_loadOnlineData一样的逻辑）
+            this.citiesMetaData = [];
+            this.citiesData = {};
+            
+            for (const [cityName, cityInfo] of Object.entries(data.cities)) {
+                // 构建城市元数据
+                this.citiesMetaData.push({
+                    cityId: cityName,
+                    cityName: cityName,
+                    province: cityInfo.province || '未知'
+                });
+                
+                // 构建城市数据
+                this.citiesData[cityName] = {
+                    cityId: cityName,
+                    cityName: cityName,
+                    data: cityInfo.data
+                };
+            }
+            
+            // 宏观数据
+            this.macroData = data.meta || null;
+        } else {
+            throw new Error('嵌入数据格式错误：无法识别的数据结构');
+        }
         
         console.log(`✅ 已加载 ${this.citiesMetaData.length} 个城市（嵌入模式）`);
     }
