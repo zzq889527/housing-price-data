@@ -1,71 +1,14 @@
 // 嵌入数据 - 由脚本自动生成
 window.EmbeddedData = {
-  "citiesMeta": [
-    {
-      "cityId": "北京",
-      "cityName": "北京",
-      "province": "北京市"
-    },
-    {
-      "cityId": "上海",
-      "cityName": "上海",
-      "province": "上海市"
-    },
-    {
-      "cityId": "广州",
-      "cityName": "广州",
-      "province": "广东省"
-    },
-    {
-      "cityId": "深圳",
-      "cityName": "深圳",
-      "province": "广东省"
-    },
-    {
-      "cityId": "杭州",
-      "cityName": "杭州",
-      "province": "浙江省"
-    },
-    {
-      "cityId": "南京",
-      "cityName": "南京",
-      "province": "江苏省"
-    },
-    {
-      "cityId": "苏州",
-      "cityName": "苏州",
-      "province": "江苏省"
-    },
-    {
-      "cityId": "宿迁",
-      "cityName": "宿迁",
-      "province": "江苏省"
-    },
-    {
-      "cityId": "连云港",
-      "cityName": "连云港",
-      "province": "江苏省"
-    },
-    {
-      "cityId": "成都",
-      "cityName": "成都",
-      "province": "四川省"
-    },
-    {
-      "cityId": "武汉",
-      "cityName": "武汉",
-      "province": "湖北省"
-    },
-    {
-      "cityId": "西安",
-      "cityName": "西安",
-      "province": "陕西省"
-    }
-  ],
-  "citiesData": {
+  "meta": {
+    "last_updated": "2026-05-02T09:14:03.633504",
+    "data_source": "示例数据（用于测试）",
+    "description": "中国主要城市房价数据（2000-2026）"
+  },
+  "cities": {
     "北京": {
-      "cityId": "北京",
-      "cityName": "北京",
+      "city_name": "北京",
+      "province": "北京市",
       "data": [
         {
           "date": "2000-01",
@@ -1650,8 +1593,8 @@ window.EmbeddedData = {
       ]
     },
     "上海": {
-      "cityId": "上海",
-      "cityName": "上海",
+      "city_name": "上海",
+      "province": "上海市",
       "data": [
         {
           "date": "2000-01",
@@ -3236,8 +3179,8 @@ window.EmbeddedData = {
       ]
     },
     "广州": {
-      "cityId": "广州",
-      "cityName": "广州",
+      "city_name": "广州",
+      "province": "广东省",
       "data": [
         {
           "date": "2000-01",
@@ -4822,8 +4765,8 @@ window.EmbeddedData = {
       ]
     },
     "深圳": {
-      "cityId": "深圳",
-      "cityName": "深圳",
+      "city_name": "深圳",
+      "province": "广东省",
       "data": [
         {
           "date": "2000-01",
@@ -6408,8 +6351,8 @@ window.EmbeddedData = {
       ]
     },
     "杭州": {
-      "cityId": "杭州",
-      "cityName": "杭州",
+      "city_name": "杭州",
+      "province": "浙江省",
       "data": [
         {
           "date": "2000-01",
@@ -7994,8 +7937,8 @@ window.EmbeddedData = {
       ]
     },
     "南京": {
-      "cityId": "南京",
-      "cityName": "南京",
+      "city_name": "南京",
+      "province": "江苏省",
       "data": [
         {
           "date": "2000-01",
@@ -9580,8 +9523,8 @@ window.EmbeddedData = {
       ]
     },
     "苏州": {
-      "cityId": "苏州",
-      "cityName": "苏州",
+      "city_name": "苏州",
+      "province": "江苏省",
       "data": [
         {
           "date": "2000-01",
@@ -11166,8 +11109,8 @@ window.EmbeddedData = {
       ]
     },
     "宿迁": {
-      "cityId": "宿迁",
-      "cityName": "宿迁",
+      "city_name": "宿迁",
+      "province": "江苏省",
       "data": [
         {
           "date": "2000-01",
@@ -12752,8 +12695,8 @@ window.EmbeddedData = {
       ]
     },
     "连云港": {
-      "cityId": "连云港",
-      "cityName": "连云港",
+      "city_name": "连云港",
+      "province": "江苏省",
       "data": [
         {
           "date": "2000-01",
@@ -14338,8 +14281,8 @@ window.EmbeddedData = {
       ]
     },
     "成都": {
-      "cityId": "成都",
-      "cityName": "成都",
+      "city_name": "成都",
+      "province": "四川省",
       "data": [
         {
           "date": "2000-01",
@@ -15924,8 +15867,8 @@ window.EmbeddedData = {
       ]
     },
     "武汉": {
-      "cityId": "武汉",
-      "cityName": "武汉",
+      "city_name": "武汉",
+      "province": "湖北省",
       "data": [
         {
           "date": "2000-01",
@@ -17510,8 +17453,8 @@ window.EmbeddedData = {
       ]
     },
     "西安": {
-      "cityId": "西安",
-      "cityName": "西安",
+      "city_name": "西安",
+      "province": "陕西省",
       "data": [
         {
           "date": "2000-01",
@@ -19095,6 +19038,5 @@ window.EmbeddedData = {
         }
       ]
     }
-  },
-  "macroData": null
+  }
 };
