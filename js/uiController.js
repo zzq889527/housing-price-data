@@ -6,7 +6,7 @@
 class UIController {
     constructor() {
         this.currentView = 'trend';      // 当前视图 (trend/candlestick/fundamental/comparison)
-        this.selectedCities = ['beijing', 'shanghai', 'guangzhou', 'shenzhen', 'hangzhou']; // 默认选中的城市
+        this.selectedCities = ['北京', '上海', '广州', '深圳', '杭州']; // 默认选中的城市（使用中文名）
         this.currentCoordType = 'linear'; // 当前坐标类型
         this.isMobile = window.innerWidth < 768;
     }
