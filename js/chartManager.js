@@ -73,7 +73,7 @@ class ChartManager {
             if (dataType === 'newHouse' || dataType === 'both') {
                 const data = filteredDates.map(date => {
                     const item = cityData.data.find(d => d.date === date);
-                    return item ? item.newHousePrice : null;
+                    return item ? item.new_house_price : null;  // 修复字段名
                 });
 
                 series.push({
@@ -92,7 +92,7 @@ class ChartManager {
             if (dataType === 'secondHand' || dataType === 'both') {
                 const data = filteredDates.map(date => {
                     const item = cityData.data.find(d => d.date === date);
-                    return item ? item.secondHandPrice : null;
+                    return item ? item.second_hand_price : null;  // 修复字段名
                 });
 
                 series.push({
@@ -215,6 +215,30 @@ class ChartManager {
         
         const { cities, coordType = 'linear', dateRange = null, maPeriods = [5, 10] } = config;
 
+        // 0. 数据预处理：添加 monthyClose 字段（从 new_house_price 转换）
+        cities.forEach(cityData => {
+            if (!cityData.data || !Array.isArray(cityData.data)) return;
+            
+            // 添加 monthyClose 字段（K线图和Calculator需要）
+            cityData.data.forEach((item, index) => {
+                if (item.new_house_price !== undefined) {
+                    item.monthlyClose = item.new_house_price;
+                } else if (item.second_hand_price !== undefined) {
+                    item.monthlyClose = item.second_hand_price;
+                }
+                
+                // 估算其他 OHLC 字段（用于K线图显示）
+                if (item.monthlyClose && !item.monthlyOpen) {
+                    // 开盘价 = 上月收盘价（第一个月等于收盘价）
+                    item.monthlyOpen = index > 0 ? cityData.data[index - 1].monthlyClose : item.monthlyClose;
+                    // 最高价 = 收盘价 * 1.02（估算上涨2%）
+                    item.monthlyHigh = item.monthlyClose * 1.02;
+                    // 最低价 = 收盘价 * 0.98（估算下跌2%）
+                    item.monthlyLow = item.monthlyClose * 0.98;
+                }
+            });
+        });
+        
         // 1. 准备 X轴数据（日期）
         const allDates = this._getAllDates(cities);
         const filteredDates = dateRange ? 
