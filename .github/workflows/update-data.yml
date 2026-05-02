@@ -1,0 +1,62 @@
+name: Update Housing Price Data
+
+on:
+  schedule:
+    # 每周日凌晨3点运行
+    - cron: '0 3 * * 0'
+  workflow_dispatch:  # 允许手动触发
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0  # 获取完整历史
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+    
+    - name: Run Stats Gov Crawler
+      run: python scripts/stats_gov_crawler.py
+      continue-on-error: true
+    
+    - name: Run Beike Crawler
+      run: python scripts/beike_crawler.py
+      continue-on-error: true
+    
+    - name: Aggregate Data
+      run: python scripts/aggregate_data.py
+    
+    - name: Commit and push if changed
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add data/
+        git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update housing price data - $(date +'%Y-%m-%d')" && git push)
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Create release
+      if: success()
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: data-${{ github.run_number }}
+        name: Data Update #${{ github.run_number }}
+        body: |
+          自动更新的房价数据
+          更新时间: ${{ github.event.head_commit.timestamp }}
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
