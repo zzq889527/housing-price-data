@@ -3,10 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>房价走势分析 - 技术分析与基本面分析</title>
+    <title>房价走势分析 - 在线版（CDN）</title>
     
-    <!-- ECharts 5.x 本地文件 -->
-    <script src="js/echarts.min.js"></script>
+    <!-- ECharts 5.x CDN（在线环境用） -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    
+    <!-- 如果 CDN 失败，显示错误提示 -->
+    <script>
+        window.addEventListener('error', function(e) {
+            if (e.filename && e.filename.includes('echarts')) {
+                document.body.innerHTML = `
+                    <div style="padding: 50px; text-align: center; font-family: Arial;">
+                        <h2>⚠️ ECharts 加载失败</h2>
+                        <p>请检查网络连接，或尝试以下方案：</p>
+                        <ol style="text-align: left; display: inline-block;">
+                            <li>刷新页面重试</li>
+                            <li>检查网络防火墙设置</li>
+                            <li>使用离线版（下载完整项目包）</li>
+                        </ol>
+                        <button onclick="location.reload()" style="padding: 10px 20px; font-size: 16px; cursor: pointer;">
+                            🔄 刷新页面
+                        </button>
+                    </div>
+                `;
+            }
+        }, true);
+    </script>
     
     <!-- 主样式文件 -->
     <link rel="stylesheet" href="css/main.css">
@@ -19,7 +41,7 @@
             <h1>📈 房价走势分析</h1>
             <p class="subtitle">技术支持 • 基本面分析 • 城市对比</p>
         </header>
-
+        
         <!-- 视图切换标签 -->
         <nav class="view-tabs">
             <button class="tab-btn active" data-view="trend">走势图</button>
@@ -27,7 +49,7 @@
             <button class="tab-btn" data-view="fundamental">基本面分析</button>
             <button class="tab-btn" data-view="comparison">城市对比</button>
         </nav>
-
+        
         <!-- 主内容区域 -->
         <main class="main-content">
             <!-- 左侧控件面板（桌面端显示） -->
@@ -42,7 +64,7 @@
                         <!-- 城市复选框将由JS动态生成 -->
                     </div>
                 </div>
-
+                
                 <!-- 时间范围选择 -->
                 <div class="control-section">
                     <h3>时间范围</h3>
@@ -53,7 +75,7 @@
                         <input type="month" id="endDate">
                     </div>
                 </div>
-
+                
                 <!-- 坐标类型切换 -->
                 <div class="control-section">
                     <h3>坐标类型</h3>
@@ -65,7 +87,7 @@
                         💡 对数坐标更适合观察长期增长率
                     </div>
                 </div>
-
+                
                 <!-- K线图均线设置（仅在K线图视图显示） -->
                 <div class="control-section" id="maSettings" style="display: none;">
                     <h3>移动平均线</h3>
@@ -76,7 +98,7 @@
                         <label><input type="checkbox" value="60"> MA60</label>
                     </div>
                 </div>
-
+                
                 <!-- 宏观指标选择（仅基本面分析视图显示） -->
                 <div class="control-section" id="macroSettings" style="display: none;">
                     <h3>宏观指标</h3>
@@ -87,7 +109,7 @@
                         <label><input type="checkbox" value="interestRate_10Y"> 10年期国债收益率</label>
                     </div>
                 </div>
-
+                
                 <!-- 归一化设置（仅城市对比视图显示） -->
                 <div class="control-section" id="normalizeSettings" style="display: none;">
                     <h3>归一化设置</h3>
@@ -102,7 +124,7 @@
                         </select>
                     </div>
                 </div>
-
+                
                 <!-- 操作按钮 -->
                 <div class="control-section actions">
                     <button id="btnExport" class="action-btn">📥 导出数据</button>
@@ -110,7 +132,7 @@
                     <button id="btnShare" class="action-btn">🔗 分享链接</button>
                 </div>
             </aside>
-
+            
             <!-- 右侧图表区域 -->
             <section class="chart-area">
                 <!-- 加载指示器 -->
@@ -118,10 +140,10 @@
                     <div class="spinner"></div>
                     <p>加载中...</p>
                 </div>
-
+                
                 <!-- 图表容器 -->
                 <div id="chartContainer" style="width: 100%; height: 500px;"></div>
-
+                
                 <!-- 分析面板（基本面分析和城市对比视图显示） -->
                 <div class="analysis-panel" id="analysisPanel" style="display: none;">
                     <!-- 基本面分析面板 -->
@@ -130,7 +152,7 @@
                         <div class="correlation-matrix" id="correlationMatrix"></div>
                         <div class="trend-comparison" id="trendComparison"></div>
                     </div>
-
+                    
                     <!-- 城市对比分析面板 -->
                     <div id="comparisonPanel" style="display: none;">
                         <h3>📈 强弱分析</h3>
@@ -148,19 +170,19 @@
                         </table>
                     </div>
                 </div>
-
+                
                 <!-- 数据来源标注 -->
                 <div class="data-source">
                     <p>数据来源: <span id="dataSource">加载中...</span> | 最后更新: <span id="lastUpdated">--</span></p>
                 </div>
             </section>
         </main>
-
+        
         <!-- 移动端控件面板切换按钮 -->
         <button class="mobile-control-toggle" id="mobileControlToggle">☰ 控件</button>
     </div>
-
-    <!-- JavaScript 模块 -->
+    
+    <!-- JavaScript 模块（CDN 版本：使用 CDN 加载 ECharts） -->
     <script src="js/embeddedData.js"></script>
     <script src="js/dataManager.js"></script>
     <script src="js/calculator.js"></script>

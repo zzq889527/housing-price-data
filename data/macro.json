@@ -1,0 +1,53 @@
+{
+  "meta": {
+    "dataSource": "示例数据 - 实际部署时请替换为真实数据（国家统计局/中国人民银行）",
+    "lastUpdated": "2026-05-01",
+    "description": "中国宏观经济指标数据（月度）",
+    "indicators": {
+      "GDP_YoY": "GDP同比增长率（%）",
+      "CPI_YoY": "CPI（居民消费价格指数）同比增长率（%）",
+      "M2_YoY": "M2货币供应量同比增长率（%）",
+      "interestRate_10Y": "10年期国债收益率（%）",
+      "realEstateInvestment_YoY": "房地产开发投资完成额累计同比增长（%）"
+    },
+    "events": "关键政策事件列表"
+  },
+  "monthlyData": [
+    {"date": "2000-01", "GDP_YoY": 8.5, "CPI_YoY": 1.5, "M2_YoY": 12.3, "interestRate_10Y": 3.5, "realEstateInvestment_YoY": 15.2},
+    {"date": "2000-02", "GDP_YoY": 8.5, "CPI_YoY": 1.6, "M2_YoY": 12.5, "interestRate_10Y": 3.5, "realEstateInvestment_YoY": 15.5},
+    {"date": "2000-03", "GDP_YoY": 8.5, "CPI_YoY": 1.7, "M2_YoY": 12.8, "interestRate_10Y": 3.6, "realEstateInvestment_YoY": 15.8},
+    {"date": "2001-01", "GDP_YoY": 8.3, "CPI_YoY": 1.2, "M2_YoY": 13.5, "interestRate_10Y": 3.4, "realEstateInvestment_YoY": 18.5},
+    {"date": "2001-02", "GDP_YoY": 8.3, "CPI_YoY": 1.3, "M2_YoY": 13.8, "interestRate_10Y": 3.4, "realEstateInvestment_YoY": 18.8},
+    {"date": "2002-01", "GDP_YoY": 9.1, "CPI_YoY": 0.8, "M2_YoY": 16.8, "interestRate_10Y": 3.2, "realEstateInvestment_YoY": 22.5},
+    {"date": "2003-01", "GDP_YoY": 10.0, "CPI_YoY": 1.2, "M2_YoY": 19.6, "interestRate_10Y": 3.0, "realEstateInvestment_YoY": 30.3},
+    {"date": "2004-01", "GDP_YoY": 10.1, "CPI_YoY": 3.9, "M2_YoY": 14.6, "interestRate_10Y": 4.0, "realEstateInvestment_YoY": 29.6},
+    {"date": "2005-01", "GDP_YoY": 11.3, "CPI_YoY": 1.8, "M2_YoY": 17.6, "interestRate_10Y": 4.3, "realEstateInvestment_YoY": 21.8},
+    {"date": "2010-01", "GDP_YoY": 10.6, "CPI_YoY": 2.2, "M2_YoY": 25.9, "interestRate_10Y": 3.8, "realEstateInvestment_YoY": 33.2},
+    {"date": "2010-02", "GDP_YoY": 10.6, "CPI_YoY": 2.7, "M2_YoY": 25.5, "interestRate_10Y": 3.8, "realEstateInvestment_YoY": 33.0},
+    {"date": "2015-01", "GDP_YoY": 7.0, "CPI_YoY": 0.8, "M2_YoY": 10.8, "interestRate_10Y": 3.6, "realEstateInvestment_YoY": 10.5},
+    {"date": "2015-02", "GDP_YoY": 7.0, "CPI_YoY": 1.4, "M2_YoY": 11.6, "interestRate_10Y": 3.4, "realEstateInvestment_YoY": 10.3},
+    {"date": "2016-01", "GDP_YoY": 6.9, "CPI_YoY": 1.8, "M2_YoY": 14.0, "interestRate_10Y": 3.2, "realEstateInvestment_YoY": 6.9},
+    {"date": "2017-01", "GDP_YoY": 6.9, "CPI_YoY": 2.5, "M2_YoY": 11.3, "interestRate_10Y": 3.9, "realEstateInvestment_YoY": 7.0},
+    {"date": "2018-01", "GDP_YoY": 6.7, "CPI_YoY": 2.1, "M2_YoY": 8.1, "interestRate_10Y": 4.0, "realEstateInvestment_YoY": 9.5},
+    {"date": "2019-01", "GDP_YoY": 6.0, "CPI_YoY": 1.7, "M2_YoY": 8.4, "interestRate_10Y": 3.7, "realEstateInvestment_YoY": 9.9},
+    {"date": "2020-01", "GDP_YoY": 2.3, "CPI_YoY": 5.4, "M2_YoY": 8.8, "interestRate_10Y": 3.2, "realEstateInvestment_YoY": -7.4},
+    {"date": "2020-02", "GDP_YoY": 2.3, "CPI_YoY": 4.3, "M2_YoY": 10.1, "interestRate_10Y": 3.1, "realEstateInvestment_YoY": -16.3},
+    {"date": "2021-01", "GDP_YoY": 8.4, "CPI_YoY": 0.3, "M2_YoY": 9.4, "interestRate_10Y": 3.3, "realEstateInvestment_YoY": 4.4},
+    {"date": "2022-01", "GDP_YoY": 3.0, "CPI_YoY": 1.5, "M2_YoY": 11.8, "interestRate_10Y": 2.8, "realEstateInvestment_YoY": -10.0},
+    {"date": "2023-01", "GDP_YoY": 5.2, "CPI_YoY": 0.7, "M2_YoY": 10.6, "interestRate_10Y": 2.9, "realEstateInvestment_YoY": -9.6},
+    {"date": "2024-01", "GDP_YoY": 5.0, "CPI_YoY": 0.5, "M2_YoY": 8.7, "interestRate_10Y": 2.5, "realEstateInvestment_YoY": -8.5},
+    {"date": "2025-01", "GDP_YoY": 4.8, "CPI_YoY": 0.8, "M2_YoY": 9.2, "interestRate_10Y": 2.6, "realEstateInvestment_YoY": -7.2},
+    {"date": "2026-01", "GDP_YoY": 4.5, "CPI_YoY": 1.0, "M2_YoY": 9.5, "interestRate_10Y": 2.7, "realEstateInvestment_YoY": -5.0}
+  ],
+  "events": [
+    {"date": "2008-11", "event": "四万亿刺激计划出台", "impact": "positive", "description": "中国政府推出四万亿人民币经济刺激计划，推动房地产和基建投资"},
+    {"date": "2010-04", "event": "国十条出台", "impact": "negative", "description": "国务院发布《关于坚决遏制部分城市房价过快上涨的通知》，开始房地产调控"},
+    {"date": "2014-09", "event": "930新政", "impact": "positive", "description": "央行放松首套房认定标准，房地产市场开始回暖"},
+    {"date": "2015-03", "event": "330新政", "impact": "positive", "description": "降低二套房首付比例，二手房营业税免征年限由5年改为2年"},
+    {"date": "2016-10", "event": "930调控潮", "impact": "negative", "description": "北京、深圳等20余城市出台房地产调控政策，降温房地产市场"},
+    {"date": "2020-02", "event": "新冠疫情冲击", "impact": "negative", "description": "新冠疫情爆发，房地产市场短期冻结，随后各国推出宽松政策"},
+    {"date": "2020-08", "event": "三道红线政策", "impact": "negative", "description": "房企融资新规出台，限制有息负债规模增长"},
+    {"date": "2021-09", "event": "恒大债务危机", "impact": "negative", "description": "恒大集团债务危机爆发，引发房地产行业信用担忧"},
+    {"date": "2022-11", "event": "金融16条", "impact": "positive", "description": "央行和银保监会发布支持房地产市场平稳健康发展的16条措施"}
+  ]
+}

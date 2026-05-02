@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>🔧 房价分析 - 诊断页面</title>
+    <style>
+        body { font-family: monospace; padding: 20px; background: #f5f5f5; }
+        h1 { color: #1a365d; }
+        .section { background: white; margin: 10px 0; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .pass { color: green; font-weight: bold; }
+        .fail { color: red; font-weight: bold; }
+        .warn { color: orange; font-weight: bold; }
+        pre { background: #eee; padding: 10px; overflow-x: auto; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>🔧 房价分析 - 运行时诊断</h1>
+    <div id="output"></div>
+
+    <!-- 添加图表容器（模拟 index.html 的环境） -->
+    <div id="chartContainer" style="width: 100%; height: 500px; display: none;"></div>
+    
+    <div class="section">
+        <h3>使用说明</h3>
+        <p>此诊断页面会检查所有模块是否正确加载和初始化。</p>
+        <p><strong>诊断通过后，请尝试打开 index.html</strong></p>
+        <button onclick="location.href='index.html'">打开主应用</button>
+    </div>
+
+    <!-- 按实际加载顺序引入脚本 -->
+    <script src="js/echarts.min.js"></script>
+    <script src="js/embeddedData.js"></script>
+    <script src="js/dataManager.js"></script>
+    <script src="js/calculator.js"></script>
+    <script src="js/chartManager.js"></script>
+    <script src="js/uiController.js"></script>
+    <script src="js/app.js"></script>
+
+    <script>
+        function log(html) {
+            document.getElementById('output').innerHTML += '<div class="section">' + html + '</div>';
+        }
+
+        // 等待 DOM 和所有脚本加载完成
+        window.addEventListener('DOMContentLoaded', function() {
+            log('<h2>🔍 开始诊断...</h2>');
+            // 延迟一点，确保 app.js 的 DOMContentLoaded 回调执行完成
+            setTimeout(runDiagnosis, 1000);
+        });
+
+        function runDiagnosis() {
+            let errors = [];
+            let warnings = [];
+
+            function check(name, condition, detail) {
+                if (condition) {
+                    log('<span class="pass">✅ ' + name + ' - 通过</span>' +
+                        (detail ? '<br><pre>' + detail + '</pre>' : ''));
+                } else {
+                    log('<span class="fail">❌ ' + name + ' - 失败</span>');
+                    errors.push(name);
+                }
+            }
+
+            function warn(name, condition, detail) {
+                if (!condition) {
+                    log('<span class="warn">⚠️ ' + name + ' - 警告</span>' +
+                        (detail ? '<br><pre>' + detail + '</pre>' : ''));
+                    warnings.push(name);
+                }
+            }
+
+            // 1. 检查 echarts
+            check('echarts 已加载', typeof echarts !== 'undefined', '版本: ' + (echarts.version || '未知'));
+
+            // 2. 检查 EmbeddedData
+            check('EmbeddedData 已定义', typeof EmbeddedData !== 'undefined');
+            check('window.EmbeddedData 已定义', typeof window.EmbeddedData !== 'undefined');
+
+            // 3. 检查 ChartManagerConstructor（类引用）
+            check('window.ChartManagerConstructor 已定义（类引用）', 
+                typeof window.ChartManagerConstructor !== 'undefined',
+                '类型: ' + typeof window.ChartManagerConstructor);
+
+            // 4. 检查 dataManager
+            check('window.dataManager 已定义', typeof window.dataManager !== 'undefined',
+                '类型: ' + typeof window.dataManager);
+
+            // 5. 检查 Calculator
+            check('window.Calculator 已定义', typeof window.Calculator !== 'undefined',
+                '类型: ' + typeof window.Calculator);
+            check('Calculator.calculateMA 是函数', typeof window.Calculator.calculateMA === 'function');
+            check('Calculator.normalize 是函数', typeof window.Calculator.normalize === 'function');
+
+            // 6. 检查 ChartManager（实例 - 由 app.js 创建）
+            check('window.ChartManager 已定义（实例）', typeof window.ChartManager !== 'undefined',
+                '类型: ' + typeof window.ChartManager);
+
+            if (typeof window.ChartManager !== 'undefined') {
+                const cm = window.ChartManager;
+                check('ChartManager 是对象', typeof cm === 'object' && cm !== null);
+                check('ChartManager.renderLineChart 是函数', typeof cm.renderLineChart === 'function');
+                check('ChartManager.renderCandlestickChart 是函数', typeof cm.renderCandlestickChart === 'function');
+                check('ChartManager.renderMacroChart 是函数', typeof cm.renderMacroChart === 'function');
+                check('ChartManager.renderComparisonChart 是函数', typeof cm.renderComparisonChart === 'function');
+                check('ChartManager.switchCoordinate 是函数', typeof cm.switchCoordinate === 'function');
+                check('ChartManager.resize 是函数', typeof cm.resize === 'function');
+                check('ChartManager.dispose 是函数', typeof cm.dispose === 'function');
+            }
+
+            // 7. 检查 uiController
+            check('window.uiController 已定义', typeof window.uiController !== 'undefined',
+                '类型: ' + typeof window.uiController);
+
+            if (typeof window.uiController !== 'undefined') {
+                const uc = window.uiController;
+                check('uiController 是对象', typeof uc === 'object' && uc !== null);
+                check('uiController.init 是函数', typeof uc.init === 'function');
+                check('uiController.switchView 是函数', typeof uc.switchView === 'function');
+                check('uiController.renderTrendView 是函数', typeof uc.renderTrendView === 'function');
+                check('uiController.renderCurrentView 是函数', typeof uc.renderCurrentView === 'function');
+            }
+
+            // 8. DOM 元素检查
+            check('#chartContainer 存在', !!document.getElementById('chartContainer'));
+            check('#loadingIndicator 存在', !!document.getElementById('loadingIndicator'));
+            check('#cityList 存在', !!document.getElementById('cityList'));
+
+            // 最终总结
+            log('<div class="section"><h2>诊断结果</h2>');
+            
+            if (errors.length === 0 && warnings.length === 0) {
+                log('<p class="pass">✅ 所有检查通过！应用应该可以正常运行。</p>');
+            } else {
+                if (errors.length > 0) {
+                    log('<p class="fail">❌ 发现 ' + errors.length + ' 个错误：' + errors.join(', ') + '</p>');
+                }
+                if (warnings.length > 0) {
+                    log('<p class="warn">⚠️ 发现 ' + warnings.length + ' 个警告：' + warnings.join(', ') + '</p>');
+                }
+            }
+            
+            log('<p><strong>下一步：</strong>如果诊断通过，请<a href="index.html">打开主应用</a></p></div>');
+        }
+    </script>
+</body>
+</html>
